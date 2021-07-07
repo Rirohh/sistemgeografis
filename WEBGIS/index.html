@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Kota_Rembang_Kecamatan_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-6.68633041335,111.370547098],[-6.55036702583,111.492214273]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        L.control.locate().addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>,<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        function setBounds() {
+        }
+        var overlay_GooglecnNormal_0 = L.tileLayer('http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}', {
+            opacity: 1.0
+        });
+        overlay_GooglecnNormal_0.addTo(map);
+        function pop_Kota_Rembang_Kecamatan_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['ID'] !== null ? Autolinker.link(String(feature.properties['ID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ID_Kec</th>\
+                        <td>' + (feature.properties['ID_Kec'] !== null ? Autolinker.link(String(feature.properties['ID_Kec'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? Autolinker.link(String(feature.properties['Kecamatan'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Jagung</th>\
+                        <td>' + (feature.properties['Jagung'] !== null ? Autolinker.link(String(feature.properties['Jagung'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">lahan jgng</th>\
+                        <td>' + (feature.properties['lahan jgng'] !== null ? Autolinker.link(String(feature.properties['lahan jgng'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kedelai</th>\
+                        <td>' + (feature.properties['Kedelai'] !== null ? Autolinker.link(String(feature.properties['Kedelai'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan kdl</th>\
+                        <td>' + (feature.properties['Lahan kdl'] !== null ? Autolinker.link(String(feature.properties['Lahan kdl'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ubi Kayu</th>\
+                        <td>' + (feature.properties['Ubi Kayu'] !== null ? Autolinker.link(String(feature.properties['Ubi Kayu'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan Ubi</th>\
+                        <td>' + (feature.properties['Lahan Ubi'] !== null ? Autolinker.link(String(feature.properties['Lahan Ubi'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ubi Jalar</th>\
+                        <td>' + (feature.properties['Ubi Jalar'] !== null ? Autolinker.link(String(feature.properties['Ubi Jalar'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan Jlr</th>\
+                        <td>' + (feature.properties['Lahan Jlr'] !== null ? Autolinker.link(String(feature.properties['Lahan Jlr'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kacang Tnh</th>\
+                        <td>' + (feature.properties['Kacang Tnh'] !== null ? Autolinker.link(String(feature.properties['Kacang Tnh'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan tnh</th>\
+                        <td>' + (feature.properties['Lahan tnh'] !== null ? Autolinker.link(String(feature.properties['Lahan tnh'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kacang Hij</th>\
+                        <td>' + (feature.properties['Kacang Hij'] !== null ? Autolinker.link(String(feature.properties['Kacang Hij'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan Hija</th>\
+                        <td>' + (feature.properties['Lahan Hija'] !== null ? Autolinker.link(String(feature.properties['Lahan Hija'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Padi</th>\
+                        <td>' + (feature.properties['Padi'] !== null ? Autolinker.link(String(feature.properties['Padi'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lahan Padi</th>\
+                        <td>' + (feature.properties['Lahan Padi'] !== null ? Autolinker.link(String(feature.properties['Lahan Padi'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Kota_Rembang_Kecamatan_1_0(feature) {
+            switch(String(feature.properties['ID_Kec'])) {
+                case '3317010':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,220,108,1.0)',
+            }
+                    break;
+                case '3317020':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(182,118,227,1.0)',
+            }
+                    break;
+                case '3317030':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(101,79,200,1.0)',
+            }
+                    break;
+                case '3317040':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,14,55,1.0)',
+            }
+                    break;
+                case '3317050':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,132,199,1.0)',
+            }
+                    break;
+                case '3317060':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,209,69,1.0)',
+            }
+                    break;
+                case '3317070':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,77,232,1.0)',
+            }
+                    break;
+                case '3317080':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,112,228,1.0)',
+            }
+                    break;
+                case '3317090':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(143,209,29,1.0)',
+            }
+                    break;
+                case '3317100':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,148,45,1.0)',
+            }
+                    break;
+                case '3317110':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(94,164,208,1.0)',
+            }
+                    break;
+                case '3317120':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,215,129,1.0)',
+            }
+                    break;
+                case '3317130':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,230,179,1.0)',
+            }
+                    break;
+                case '3317140':
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,122,105,1.0)',
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Kota_Rembang_Kecamatan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(98,201,200,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Kota_Rembang_Kecamatan_1');
+        map.getPane('pane_Kota_Rembang_Kecamatan_1').style.zIndex = 401;
+        map.getPane('pane_Kota_Rembang_Kecamatan_1').style['mix-blend-mode'] = 'normal';
+        var layer_Kota_Rembang_Kecamatan_1 = new L.geoJson(json_Kota_Rembang_Kecamatan_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Kota_Rembang_Kecamatan_1',
+            onEachFeature: pop_Kota_Rembang_Kecamatan_1,
+            style: style_Kota_Rembang_Kecamatan_1_0,
+        });
+        bounds_group.addLayer(layer_Kota_Rembang_Kecamatan_1);
+        map.addLayer(layer_Kota_Rembang_Kecamatan_1);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Kota_Rembang_Kecamatan<br /><table><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170100.png" /></td><td>3317010</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170201.png" /></td><td>3317020</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170302.png" /></td><td>3317030</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170403.png" /></td><td>3317040</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170504.png" /></td><td>3317050</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170605.png" /></td><td>3317060</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170706.png" /></td><td>3317070</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170807.png" /></td><td>3317080</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33170908.png" /></td><td>3317090</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_33171009.png" /></td><td>3317100</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_331711010.png" /></td><td>3317110</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_331712011.png" /></td><td>3317120</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_331713012.png" /></td><td>3317130</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_331714013.png" /></td><td>3317140</td></tr><tr><td style="text-align: center;"><img src="legend/Kota_Rembang_Kecamatan_1_14.png" /></td><td></td></tr></table>': layer_Kota_Rembang_Kecamatan_1,"Google.cn Normal": overlay_GooglecnNormal_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Kota_Rembang_Kecamatan_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Kecamatan'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['Kecamatan']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Kota_Rembang_Kecamatan_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_Kota_Rembang_Kecamatan_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Kecamatan'}));
+        resetLabels([layer_KotaRembangKecamatan_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_KotaRembangKecamatan_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_KotaRembangKecamatan_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_KotaRembangKecamatan_1]);
+        });
+        </script>
+    </body>
+</html>
